@@ -1,0 +1,45 @@
+#include <Wire.h>
+#include <Adafruit_ADS1X15.h>
+
+Adafruit_ADS1015 ads;  // Create an instance of the ADS1115 class
+
+void setup() {
+  Serial.begin(230400);
+  //Serial.println("Hello!");
+
+  // Initialize the ADS1115
+  if (!ads.begin()) {
+    Serial.println("Failed to initialize ADS1115!");
+    while (1);
+  }
+}
+
+void loop() {
+  static unsigned long previousMillis = 0;
+  const unsigned long interval = 33; // Set the interval for 30 fps
+
+  unsigned long currentMillis = millis();
+
+  // Check if it's time to read and print data
+  if (currentMillis - previousMillis >= interval) {
+    // Save the current time
+    previousMillis = currentMillis;
+
+    // Read the analog voltage on channel 0
+    int16_t adcValue = ads.readADC_SingleEnded(0);
+
+    // Convert the ADC value to voltage (assuming a 5V reference)
+    float voltage = adcValue * 0.1875 / 1000.0;
+
+    // Perform additional calculations for AD8307 logarithmic scale (in dB)
+    float logVoltage = (voltage - 0.75) / 0.04;  // Example conversion, adjust based on your calibration
+
+    // Print the results
+    //Serial.print("Analog Voltage: ");
+    // Serial.print(voltage);
+    //Serial.println(" V");
+
+    
+    Serial.println(logVoltage);
+  }
+}

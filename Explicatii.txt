@@ -1,0 +1,43 @@
+Certainly! Let's go through each function in the provided script and explain its purpose:
+
+1. **`gaussian_with_nan(U, sigma=7)`**:
+   - This function computes the Gaussian blur of a NumPy array `U` while handling NaN (Not a Number) values.
+   - It uses the `gaussian_filter` function from `scipy.ndimage.filters` to perform the blur.
+   - The parameter `sigma` is the standard deviation of the Gaussian kernel and is set to a default value of 7.
+
+2. **`print_sdr_config(sdr)`**:
+   - This function prints the configuration details of an RTL-SDR device.
+   - It outputs information such as the device's serial addresses, whether the device is open, center frequency, sample rate, gain, and available gains.
+
+3. **`get_RMS_power(sdr)`**:
+   - Measures the Root Mean Square (RMS) power using an RTL-SDR device.
+   - It reads a block of samples, computes the Power Spectral Density (PSD) using Welch's method, and returns the RMS power in dBm.
+
+4. **`export_to_csv(measurements, filename='rms_power_measurements.csv')`**:
+   - Exports a list of measurements to a CSV file.
+   - The CSV file includes columns for frame number, RMS power (in dBm), X-coordinate, and Y-coordinate.
+
+5. **`visualize_power(measurements)`**:
+   - Creates a simple line plot using Matplotlib to visualize the RMS power over time (frame number).
+
+6. **`main()`**:
+   - The main entry point of the script.
+   - Configures and initializes the RTL-SDR device and the webcam.
+   - Sets up variables for storing EMI map, frames, and measurements.
+   - Utilizes OpenCV for video processing, including background subtraction, thresholding, and object tracking.
+   - Allows user interactions such as selecting a region for tracking, resetting, and displaying the EMI map.
+   - Handles the main loop for real-time video processing and user input.
+   - Gracefully closes resources (SDR, webcam, and OpenCV) when the script exits.
+
+7. **`__name__ == "__main__"`**:
+   - Ensures that the `main()` function is only executed when the script is run directly (not imported as a module).
+
+These functions collectively provide a framework for capturing video frames, processing them, tracking a selected region, measuring EMI, and visualizing the results.
+
+
+************************************************************************************************************************
+
+12/15/2023
+continua cu implementerea
+antena magnetica in 2 planuri - pentru acuratete marita
+placa de sunet
