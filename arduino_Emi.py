@@ -77,13 +77,13 @@ def button_event_help():
                 * Press "q" to display the EMI map and exit.
 
             **How to use the script:**
-                1. Select the COM port your DAQ is connected to.
-                2. Launch the script by pressing the start button.
-                3. Before selecting the script, position the camera in a stable way and the DUT and the probe and press the RESET (r) button.
-                4. Now press the SELECT (s) button and with your LEFT-CLICk button on the mouse select the probe head.
-                5. Press "Space" or "Enter" after you selected the probe head.
-                6. Move the probe above the DUT.
-                7. Press Q to see the result.
+                1.Select the COM port your DAQ is connected to.
+                2. 
+                3.Properly position the device under test (DUT) in the camera image,
+                4.Press "R" to set the position (the camera and DUT must not move after pressing "R"),
+                5.Put the probe in the frame, press "S", select the probe with the mouse and press "ENTER" to start the scanning,
+                6.Scan the DUT by moving the probe,
+                7.Press "Q" to exit. If a scan was made, the result is displayed.
             """,
             text_color="white",
             font=("Calibri", 24,"bold"),  # Different font
@@ -140,16 +140,33 @@ def gaussian_with_nan(U, sigma=7):
 
 
 
-
+"""""""""""
 def get_port_name():
-    """
-    Let the user chose the COM port and store it for future use
-    """
+    
     port=os.getenv("COM_PORT")
     if port is None:
         port=input("Enter COM port name (e.g. COMx) where x is the number of the port: ")
         os.environ["COM_PORT"]=port
     return port
+"""""""""""
+
+def get_user_input():
+  """
+  This function creates a dialog window and retrieves user input.
+  """
+  dialog = customtkinter.CTkInputDialog(
+      text="COMx:",
+      title="Select COM PORT",
+      fg_color="black"  # Text color
+  )
+  user_input = dialog.get_input()  # Get the input
+
+  # Process the user input here (optional)
+
+  # Close the main window after getting input (optional)
+  # root.destroy()  # Uncomment this line if you want to close the script after input
+
+  return user_input
 
 
 
@@ -160,7 +177,8 @@ def get_port_name():
 
 
 
-def get_RMS_power(port=get_port_name(), baudrate=230400):
+
+def get_RMS_power(port=get_user_input(), baudrate=230400):
     ser = serial.Serial(port, baudrate)
 
     try:
@@ -191,7 +209,7 @@ def main():
 
 
     # read from specified webcam  s
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
 
     if cap is None or not cap.isOpened():
         print('Error: unable to open video source: ')
@@ -203,8 +221,8 @@ def main():
     firstFrameMask = None
 
     # Init OpenCV object tracker objects
-    tracker = cv2.TrackerCSRT_create()
-
+    #tracker = cv2.TrackerCSRT_create()
+    tracker=cv2.legacy.TrackerCSRT_create()
     #tracker = cv2.TrackerCSRT_create()
     init_tracking_BB = None
 
@@ -273,6 +291,7 @@ def main():
         plt.show()
     else:
         print("Warning: nothing captured, nothing to do")
+
 root.mainloop()
 
 
